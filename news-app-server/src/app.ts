@@ -1,17 +1,18 @@
 import Fastify from "fastify";
 import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
+import articleRoutes from "./modules/article/article.route";
+import cors from "@fastify/cors";
 const server = Fastify();
 
 server.get("/test", async (request, response) => {
   return "test";
 });
 
-for (const schema in userSchemas) {
-  console.log(schema);
-  server.addSchema(schema);
-}
-server.register(userRoutes, { prefix: "api/users" });
+server.register(articleRoutes, { prefix: "api/articles" });
+server.register(cors, {
+  origin: "*",
+});
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
     server.log.error(err);
