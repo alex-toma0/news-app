@@ -1,5 +1,5 @@
 import ArticleCard from "./components/ArticleCard";
-interface Article {
+export interface Article {
   title: string;
   author: string;
   source: string;

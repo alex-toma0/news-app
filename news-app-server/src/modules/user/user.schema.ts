@@ -1,32 +1,30 @@
-import { z } from "zod";
-import { buildJsonSchemas } from "fastify-zod";
-const userCore = {
-  email: z
-    .string({
-      required_error: "Email is required",
-      invalid_type_error: "Email must be a string",
-    })
-    .email(),
-  name: z.string({
-    required_error: "Password is required",
-    invalid_type_error: "Password must be a string",
-  }),
-};
-const createUserSchema = z.object({
-  ...userCore,
-  password: z.string({
-    required_error: "Password is required",
-    invalid_type_error: "Password must be a string",
+import { Type, Static } from "@fastify/type-provider-typebox";
+import { FastifySchema } from "fastify";
+
+export const CreateUserBody = Type.Object({
+  email: Type.String({ format: "email" }),
+  name: Type.String(),
+  password: Type.String({
+    minLength: 4,
   }),
 });
 
-const createUserResponseSchema = z.object({
-  ...userCore,
-  id: z.number(),
+export const CreateUserResponse = Type.Object({
+  id: Type.Number(),
+  email: Type.String({ format: "email" }),
+  name: Type.String(),
+  password: Type.String({
+    minLength: 4,
+  }),
 });
 
-export type CreateUserInput = z.infer<typeof createUserSchema>;
-export const { schemas: userSchemas, $ref } = buildJsonSchemas({
-  createUserSchema,
-  createUserResponseSchema,
+export const LoginUserBody = Type.Object({
+  email: Type.String({ format: "email" }),
+  password: Type.String({
+    minLength: 4,
+  }),
+});
+
+export const LoginResponse = Type.Object({
+  accesToken: Type.String(),
 });

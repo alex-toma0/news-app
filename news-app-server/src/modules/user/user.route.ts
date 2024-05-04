@@ -1,19 +1,53 @@
-import { FastifyInstance } from "fastify";
-import registerUserHandler from "./user.controller";
-import { $ref } from "./user.schema";
-const userRoutes = async (server: FastifyInstance) => {
-  server.post(
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import {
+  CreateUserBody,
+  CreateUserResponse,
+  LoginResponse,
+  LoginUserBody,
+} from "./user.schema";
+import {
+  createUserHandler,
+  loginUserHandler,
+  logoutHandler,
+} from "./user.controller";
+export async function userRoutes(server: FastifyInstance) {
+  server.get(
     "/",
     {
+      preHandler: [server.authenticate],
+    },
+    (req: FastifyRequest, reply: FastifyReply) => {
+      reply.send({ message: "/ route hit" });
+    }
+  );
+  server.post(
+    "/register",
+    {
       schema: {
-        body: $ref("createUserSchema"),
+        body: CreateUserBody,
         response: {
-          201: $ref("createUserResponseSchema"),
+          201: CreateUserBody,
         },
       },
     },
-    registerUserHandler
+    createUserHandler
   );
-};
-
-export default userRoutes;
+  server.post(
+    "/login",
+    {
+      schema: {
+        body: LoginUserBody,
+        response: {
+          201: LoginResponse,
+        },
+      },
+    },
+    loginUserHandler
+  );
+  server.delete(
+    "/logout",
+    { preHandler: [server.authenticate] },
+    logoutHandler
+  );
+  server.log.info("user routes registered");
+}
