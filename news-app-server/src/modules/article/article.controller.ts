@@ -6,13 +6,31 @@ const getTopArticlesHandler = async (
 ) => {
   try {
     const res = await fetch(
-      "https://api.webz.io/newsApiLite?token=67091c05-f1ac-4fe5-9634-f9ee91a0bcd1&q=site_type%3Anews"
+      `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&languages=en&limit=10`,
     );
-    return reply.code(200).send(res);
+    const topArticles = await res.json();
+    return reply.code(200).send(topArticles);
   } catch (err) {
     console.log(err);
     return reply.code(500).send(err);
   }
 };
 
-export default getTopArticlesHandler;
+const getArticlesByCategoryHandler = async (
+  request: FastifyRequest<{Params: {category: string}}>,
+  reply: FastifyReply,
+) => {
+  try {
+    const {category} = request.params;
+    const res = await fetch(
+      `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&categories=${category}&languages=en&limit=10`
+    )
+    const articles = await res.json()
+    return reply.code(200).send(articles);
+  } catch (err) {
+    console.log(err);
+    return reply.code(500).send(err);
+  }
+}
+
+export {getTopArticlesHandler, getArticlesByCategoryHandler};

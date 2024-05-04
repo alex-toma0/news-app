@@ -5,26 +5,36 @@ export default function ArticleCard({
   uploadTime,
   author,
   image,
+  url,
 }: {
   source: string;
   title: string;
   uploadTime: string;
   author: string;
   image: string;
+  url: string;
 }) {
+const uploadDate = new Date(uploadTime);
+const day = uploadDate.getDay();
+const month = uploadDate.getMonth() + 1;
+const year = uploadDate.getFullYear()
+
   return (
-    <Card className="py-4">
-      <CardHeader className="flex-col items-start">
+    <Card className="py-2 my-4">
+      <CardHeader className="flex-col items-start flex-wrap">
         <small>{source}</small>
-        <h1>{title}</h1>
-        <small>{uploadTime} ago</small>
+        <a href={url} className="h-2 font-extrabold pb-6">{title}</a>
       </CardHeader>
-      <CardBody>
+      <CardBody className="flex-col">
+        <small>{`${year}-${month}-${day}`}</small>
+        {image &&
         <Image
-          alt="Article Image"
-          src="https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png"
-          width={270}
-        ></Image>
+        alt="Article Image"
+        src={image}
+        width={270}
+      ></Image>
+       }
+        
       </CardBody>
     </Card>
   );

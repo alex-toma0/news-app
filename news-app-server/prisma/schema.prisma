@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:C:/Users/alext/Documents/Projects/Databases/news.db"
+  url      = "file:/home/alex/Documents/Databases/news.db"
 }
 
 model User {

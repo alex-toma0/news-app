@@ -1,25 +1,46 @@
 import ArticleCard from "./components/ArticleCard";
+interface Article {
+  title: string;
+  author: string;
+  source: string;
+  published_at: string;
+  image: string;
+  url: string;
+}
 const getTopArticles = async () => {
-  const res: any = await fetch("http://localhost:8080/api/articles");
-  console.log(res);
+  const res: any = await fetch("http://localhost:8080/api/articles/getTopArticles");
   if (!res.ok) {
     throw new Error("Couldn't fetch articles!");
   }
   const data = await res.json();
-  console.log(data["posts"]);
-  return data["posts"];
+  return data["data"];
 };
 export default async function Home() {
   const articles = await getTopArticles();
-  return (
-    <>
-      <ArticleCard
-        title={articles[0].title}
-        author={articles[0].author}
-        source={articles[0].site}
-        uploadTime={articles[0].published}
-        image={articles[0].main_image}
-      ></ArticleCard>
-    </>
-  );
+  console.log(articles);
+  if (articles.length > 0) {
+    return (
+      <div className="flex-col content-center">
+        
+      {articles.map((article: Article) => (<ArticleCard
+          key={`${article.title}_${article.published_at}`}
+          title={article.title}
+          author={article.author}
+          source={article.source}
+          uploadTime={article.published_at}
+          image={article.image}
+          url={article.url}
+        ></ArticleCard>
+      )
+    )}
+      </div>
+    )
+
+  }
+  else {
+    return (
+      <>Articles couldn't be loaded!</>
+    )
+  }
+  
 }
