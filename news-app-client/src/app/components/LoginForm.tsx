@@ -1,13 +1,12 @@
-import signup from "../actions/auth/signup";
+import login from "../actions/auth/login";
 import { Input, Button } from "@nextui-org/react";
-export default function RegisterForm() {
+export default function LoginForm() {
   return (
-    <form action={signup}>
+    <form action={login}>
       <div className="flex flex-col items-center justify-center">
-        <h1 className="my-2">Register </h1>
+        <h1 className="my-2">Login </h1>
 
         <Input name="email" className="my-2" type="email" label="Email" />
-        <Input name="name" className="my-2" type="text" label="Name" />
         <Input
           name="password"
           className="my-2"
@@ -15,7 +14,7 @@ export default function RegisterForm() {
           label="Password"
         />
         <Button className="my-2" type="submit">
-          Sign up
+          Login
         </Button>
       </div>
     </form>

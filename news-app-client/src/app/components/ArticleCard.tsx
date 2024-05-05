@@ -14,27 +14,22 @@ export default function ArticleCard({
   image: string;
   url: string;
 }) {
-const uploadDate = new Date(uploadTime);
-const day = uploadDate.getDay();
-const month = uploadDate.getMonth() + 1;
-const year = uploadDate.getFullYear()
+  const uploadDate = new Date(uploadTime);
+  const day = uploadDate.getDay();
+  const month = uploadDate.getMonth() + 1;
+  const year = uploadDate.getFullYear();
 
   return (
     <Card className="py-2 my-4">
-      <CardHeader className="flex-col items-start flex-wrap">
+      <CardHeader className="flex flex-col items-start flex-wrap">
         <small>{source}</small>
-        <a href={url} className="h-2 font-extrabold pb-6">{title}</a>
+        <a href={url} className="h-2 font-extrabold pb-6">
+          {title}
+        </a>
       </CardHeader>
-      <CardBody className="flex-col">
+      <CardBody className="flex flex-col">
         <small>{`${year}-${month}-${day}`}</small>
-        {image &&
-        <Image
-        alt="Article Image"
-        src={image}
-        width={270}
-      ></Image>
-       }
-        
+        {image && <Image alt="Article Image" src={image} width={270}></Image>}
       </CardBody>
     </Card>
   );

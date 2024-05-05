@@ -17,7 +17,7 @@ listeners.forEach((signal) => {
   });
 });
 server.register(cors, {
-  origin: "*",
+  origin: true,
 });
 server.register(fjwt, { secret: process.env.JWT_SECRET! });
 
