@@ -20,16 +20,16 @@ export default function ArticleCard({
   const year = uploadDate.getFullYear();
 
   return (
-    <Card className="py-2 my-4">
+    <Card className="w-full max-w-lg flex flex-col items-start">
       <CardHeader className="flex flex-col items-start flex-wrap">
         <small>{source}</small>
-        <a href={url} className="h-2 font-extrabold pb-6">
+        <a href={url} className="font-extrabold">
           {title}
         </a>
       </CardHeader>
       <CardBody className="flex flex-col">
         <small>{`${year}-${month}-${day}`}</small>
-        {image && <Image alt="Article Image" src={image} width={270}></Image>}
+        {image && <Image alt="Article Image" src={image} width="185rem" />}
       </CardBody>
     </Card>
   );

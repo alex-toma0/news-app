@@ -1,6 +1,4 @@
-
-export default async function Feed() {
-    return (
-        <>This is a test</>
-    )
+const feeds = [];
+export default function Page() {
+  return <div></div>;
 }
