@@ -10,9 +10,10 @@ datasource db {
   url      = "file:/home/alex/Documents/Databases/news.db"
 }
 
-model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
+model userFeeds {
+  user_id    String
+  feed_name  String
+  categories String
+
+  @@id([user_id, feed_name])
 }

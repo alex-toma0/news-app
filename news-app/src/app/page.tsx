@@ -8,14 +8,15 @@ export interface Article {
   url: string;
 }
 const getTopArticles = async () => {
-  const res: any = await fetch(
-    "http://localhost:8080/api/articles/getTopArticles"
+  const res = await fetch(
+    `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&languages=en&limit=10`
   );
+
   if (!res.ok) {
     throw new Error("Couldn't fetch articles!");
   }
-  const data = await res.json();
-  return data["data"];
+  const topArticles = await res.json();
+  return topArticles["data"];
 };
 export default async function Home() {
   const articles = await getTopArticles();

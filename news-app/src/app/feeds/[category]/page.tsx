@@ -3,7 +3,7 @@ import { Article } from "@/app/page";
 const getArticlesByCategory = async (category: string) => {
   try {
     const res = await fetch(
-      `http://localhost:8080/api/articles/getArticlesByCategory/${category}`
+      `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&categories=${category}&languages=en&limit=10`
     );
     const articles = await res.json();
     return articles["data"];
@@ -12,13 +12,12 @@ const getArticlesByCategory = async (category: string) => {
     return err;
   }
 };
-export default async function Feed({
+export default async function Page({
   params,
 }: {
   params: { category: string };
 }) {
   const articles = await getArticlesByCategory(params.category);
-  console.log(articles);
   if (articles.length > 0) {
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
