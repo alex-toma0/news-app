@@ -1,6 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "./utils/prisma";
+import { redirect } from "next/navigation";
 export async function createFeed(formData: FormData) {
   const name = formData.get("feedName") as string;
   const feedCategories = formData.getAll("feedCategory");
@@ -8,7 +9,6 @@ export async function createFeed(formData: FormData) {
   if (!userId) {
     return { msg: "user is not authenticated!" };
   }
-  const prisma = new PrismaClient();
   const feed = await prisma.userFeeds.create({
     data: {
       user_id: userId,
@@ -16,5 +16,8 @@ export async function createFeed(formData: FormData) {
       categories: feedCategories.toString(),
     },
   });
-  return { feed: feed };
+  if (!feed) {
+    alert("Your feed couldn't be created!");
+  }
+  redirect("/feeds");
 }

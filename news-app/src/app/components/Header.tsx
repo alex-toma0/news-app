@@ -21,6 +21,11 @@ export default function Header() {
         <NavbarItem>
           <Link href="/about">About</Link>
         </NavbarItem>
+        <SignedIn>
+          <NavbarItem>
+            <Link href="/feeds">Feeds</Link>
+          </NavbarItem>
+        </SignedIn>
         <SignedOut>
           <NavbarItem>
             <Link href="/sign-up" passHref>

@@ -1,12 +1,35 @@
 import Link from "next/link";
 import { Divider, Button } from "@nextui-org/react";
-const feeds = [];
-export default function Page() {
+import { auth } from "@clerk/nextjs/server";
+import prisma from "../utils/prisma";
+const getUserFeeds = async () => {
+  const { userId } = auth();
+  const feeds = await prisma.userFeeds.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+  return feeds;
+};
+export default async function Page() {
+  const feeds = await getUserFeeds();
+  console.log(feeds);
   let feedList = <></>;
   if (feeds.length === 0) {
-    feedList = <p>Your have no custom feeds, start by creating one!</p>;
+    feedList = <p>You have no custom feeds, start by creating one!</p>;
   } else {
-    feedList = <p>this is your feed list</p>;
+    feedList = (
+      <div className="flex flex-col py-5">
+        {feeds.map((feed) => (
+          <Link
+            key={feed.feed_name + feed.categories}
+            href={`/feeds/${feed.categories}`}
+          >
+            <p className="py-2">{feed.feed_name}</p>
+          </Link>
+        ))}
+      </div>
+    );
   }
   return (
     <div className="py-10 flex flex-col gap-3">
