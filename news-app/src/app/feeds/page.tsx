@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Divider, Button } from "@nextui-org/react";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "../utils/prisma";
+import Image from "next/image";
 const getUserFeeds = async () => {
   const { userId } = auth();
   const feeds = await prisma.userFeeds.findMany({
@@ -19,20 +20,38 @@ export default async function Page() {
     feedList = <p>You have no custom feeds, start by creating one!</p>;
   } else {
     feedList = (
-      <div className="flex flex-col py-5">
+      <div className="max-w-lg table">
+        <div className="table-row border-b-2">
+          <div className="table-cell py-2 px-2 text-left">Name</div>
+          <div className="table-cell py-2 px-2 text-left">Categories</div>
+          <div className="table-cell py-2 px-2 text-left">Edit</div>
+        </div>
         {feeds.map((feed) => (
-          <Link
-            key={feed.feed_name + feed.categories}
-            href={`/feeds/${feed.categories}`}
-          >
-            <p className="py-2">{feed.feed_name}</p>
-          </Link>
+          <div className="table-row even:bg-gray-600">
+            <Link
+              key={feed.feed_name + feed.categories}
+              href={`/feeds/${feed.categories}`}
+            >
+              <div className="table-cell py-1 px-2">{feed.feed_name}</div>
+            </Link>
+            <div className="table-cell">{feed.categories}</div>
+            <div className="table-cell align-bottom">
+              {
+                <Image
+                  src="/edit-icon.svg"
+                  width="35"
+                  height="35"
+                  alt="edit-icon"
+                />
+              }
+            </div>
+          </div>
         ))}
       </div>
     );
   }
   return (
-    <div className="py-10 flex flex-col gap-3">
+    <div className="py-10 pl-12 flex flex-col gap-7">
       <h1 className="text-3xl font-bold">Your Feeds</h1>
       <small className="font-extralight">View or Create a custom feed</small>
       <Divider />
