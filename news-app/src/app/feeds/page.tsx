@@ -14,7 +14,6 @@ const getUserFeeds = async () => {
 };
 export default async function Page() {
   const feeds = await getUserFeeds();
-  console.log(feeds);
   let feedList = <></>;
   if (feeds.length === 0) {
     feedList = <p>You have no custom feeds, start by creating one!</p>;
@@ -24,27 +23,16 @@ export default async function Page() {
         <div className="table-row border-b-2">
           <div className="table-cell py-2 px-2 text-left">Name</div>
           <div className="table-cell py-2 px-2 text-left">Categories</div>
-          <div className="table-cell py-2 px-2 text-left">Edit</div>
         </div>
         {feeds.map((feed) => (
           <div className="table-row even:bg-gray-600">
             <Link
               key={feed.feed_name + feed.categories}
-              href={`/feeds/${feed.categories}`}
+              href={`/feeds/${feed.user_id}/${feed.feed_name}/${feed.categories}`}
             >
               <div className="table-cell py-1 px-2">{feed.feed_name}</div>
             </Link>
             <div className="table-cell">{feed.categories}</div>
-            <div className="table-cell align-bottom">
-              {
-                <Image
-                  src="/edit-icon.svg"
-                  width="35"
-                  height="35"
-                  alt="edit-icon"
-                />
-              }
-            </div>
           </div>
         ))}
       </div>

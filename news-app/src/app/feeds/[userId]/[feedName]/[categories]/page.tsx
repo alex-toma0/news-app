@@ -1,5 +1,6 @@
 import ArticleCard from "@/app/components/ArticleCard";
 import { Article } from "@/app/page";
+import DeleteFeed from "@/app/components/DeleteFeed";
 const getArticlesByCategory = async (category: string) => {
   try {
     const res = await fetch(
@@ -15,12 +16,14 @@ const getArticlesByCategory = async (category: string) => {
 export default async function Page({
   params,
 }: {
-  params: { category: string };
+  params: { feedName: string; categories: string; userId: string };
 }) {
-  const articles = await getArticlesByCategory(params.category);
+  const articles = await getArticlesByCategory(params.categories);
   if (articles.length > 0) {
+    console.log(articles);
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
+        <DeleteFeed feedName={params.feedName} userId={params.userId} />
         {articles.map((article: Article) => (
           <ArticleCard
             key={`${article.title}_${article.published_at}`}

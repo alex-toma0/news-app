@@ -23,6 +23,7 @@ export default async function Home() {
   if (articles.length > 0) {
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
+        <p>Trending Articles</p>
         {articles.map((article: Article) => (
           <ArticleCard
             key={`${article.title}_${article.published_at}`}

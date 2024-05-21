@@ -1,7 +1,15 @@
 "use client";
 import { createFeed } from "@/app/actions";
 import { Input, Select, SelectItem, Button } from "@nextui-org/react";
-const categories = ["sports", "health"];
+const categories = [
+  "general",
+  "business",
+  "entertainment",
+  "health",
+  "science",
+  "sports",
+  "technology",
+];
 export default function Page() {
   return (
     <div className="flex flex-col">
