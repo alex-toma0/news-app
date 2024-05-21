@@ -23,16 +23,18 @@ export default async function Page() {
         <div className="table-row border-b-2">
           <div className="table-cell py-2 px-2 text-left">Name</div>
           <div className="table-cell py-2 px-2 text-left">Categories</div>
+          <div className="table-cell py-2 px-2 text-left">Language</div>
         </div>
         {feeds.map((feed) => (
           <div className="table-row even:bg-gray-600">
             <Link
               key={feed.feed_name + feed.categories}
-              href={`/feeds/${feed.user_id}/${feed.feed_name}/${feed.categories}`}
+              href={`/feeds/${feed.user_id}/${feed.feed_name}/${feed.categories}/${feed.languages}`}
             >
               <div className="table-cell py-1 px-2">{feed.feed_name}</div>
             </Link>
             <div className="table-cell">{feed.categories}</div>
+            <div className="table-cell">{feed.languages}</div>
           </div>
         ))}
       </div>

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 export async function createFeed(formData: FormData) {
   const name = formData.get("feedName") as string;
   const feedCategories = formData.getAll("feedCategory");
+  const languages = formData.getAll("languages");
   const { userId } = auth();
   if (!userId) {
     return { msg: "user is not authenticated!" };
@@ -14,6 +15,7 @@ export async function createFeed(formData: FormData) {
       user_id: userId,
       feed_name: name,
       categories: feedCategories.toString(),
+      languages: languages.toString(),
     },
   });
   if (!feed) {

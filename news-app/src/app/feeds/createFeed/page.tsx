@@ -10,6 +10,13 @@ const categories = [
   "sports",
   "technology",
 ];
+const languageObj: any = {
+  Arabic: "ar",
+  German: "de",
+  English: "en",
+  Spanish: "es",
+};
+const languages = Object.keys(languageObj);
 export default function Page() {
   return (
     <div className="flex flex-col">
@@ -25,6 +32,21 @@ export default function Page() {
           {categories.map((category) => (
             <SelectItem key={category} value={category}>
               {category}
+            </SelectItem>
+          ))}
+        </Select>
+        <Select
+          label="Choose your language"
+          placeholder="Select a language"
+          selectionMode="single"
+          name="languages"
+        >
+          {languages.map((language) => (
+            <SelectItem
+              key={languageObj[language]}
+              value={languageObj[language]}
+            >
+              {language}
             </SelectItem>
           ))}
         </Select>

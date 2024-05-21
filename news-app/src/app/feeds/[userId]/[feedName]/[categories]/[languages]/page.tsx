@@ -1,10 +1,10 @@
 import ArticleCard from "@/app/components/ArticleCard";
 import { Article } from "@/app/page";
 import DeleteFeed from "@/app/components/DeleteFeed";
-const getArticlesByCategory = async (category: string) => {
+const getArticlesByCategory = async (category: string, languages: string) => {
   try {
     const res = await fetch(
-      `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&categories=${category}&languages=en&limit=10`
+      `http://api.mediastack.com/v1/news?access_key=${process.env.API_KEY}&categories=${category}&languages=${languages}&limit=10`
     );
     const articles = await res.json();
     return articles["data"];
@@ -16,9 +16,17 @@ const getArticlesByCategory = async (category: string) => {
 export default async function Page({
   params,
 }: {
-  params: { feedName: string; categories: string; userId: string };
+  params: {
+    feedName: string;
+    categories: string;
+    userId: string;
+    languages: string;
+  };
 }) {
-  const articles = await getArticlesByCategory(params.categories);
+  const articles = await getArticlesByCategory(
+    params.categories,
+    params.languages
+  );
   if (articles.length > 0) {
     console.log(articles);
     return (
