@@ -18,3 +18,14 @@ model userFeeds {
 
   @@id([user_id, feed_name])
 }
+
+model userFavorites {
+  user_id    String
+  source     String
+  title      String
+  url        String
+  image      String?
+  uploadDate DateTime
+
+  @@id([user_id, url])
+}

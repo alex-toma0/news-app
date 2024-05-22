@@ -18,9 +18,6 @@ export async function createFeed(formData: FormData) {
       languages: languages.toString(),
     },
   });
-  if (!feed) {
-    alert("Your feed couldn't be created!");
-  }
   redirect("/feeds");
 }
 
@@ -49,4 +46,28 @@ export const handleDelete = async (feedName: string, userId: string) => {
     },
   });
   return deleteFeed;
+};
+
+export const uploadFavorite = async (
+  title: string,
+  source: string,
+  url: string,
+  image: string,
+  uploadDate: Date
+) => {
+  const { userId } = auth();
+  if (!userId) {
+    return;
+  }
+  const favorite = await prisma.userFavorites.create({
+    data: {
+      user_id: userId,
+      title: title,
+      source: source,
+      url: url,
+      image: image,
+      uploadDate: uploadDate,
+    },
+  });
+  return favorite;
 };

@@ -1,4 +1,7 @@
+"use client";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import { uploadFavorite } from "../actions";
+import { useRouter } from "next/navigation";
 export default function ArticleCard({
   source,
   title,
@@ -14,6 +17,20 @@ export default function ArticleCard({
   image: string;
   url: string;
 }) {
+  const router = useRouter();
+  const handleFavorite = async (
+    title: string,
+    source: string,
+    url: string,
+    image: string,
+    uploadDate: Date
+  ) => {
+    const uploaded = uploadFavorite(title, source, url, image, uploadDate);
+    if (!uploaded) {
+      alert("Your feed couldn't be favorited");
+    }
+    alert("Your feed has been favorited!");
+  };
   const uploadDate = new Date(uploadTime);
   const day = uploadDate.getDay();
   const month = uploadDate.getMonth() + 1;
@@ -31,12 +48,16 @@ export default function ArticleCard({
         <small>{`${year}-${month}-${day}`}</small>
         {image && <Image alt="Article Image" src={image} width="185rem" />}
       </CardBody>
-      <Image
-        className="ml-3"
-        src="/favorite.svg"
-        height={40}
-        width={40}
-      ></Image>
+      <button
+        onClick={() => handleFavorite(title, source, url, image, uploadDate)}
+      >
+        <Image
+          className="ml-3"
+          src="/favorite.svg"
+          height={40}
+          width={40}
+        ></Image>
+      </button>
     </Card>
   );
 }
