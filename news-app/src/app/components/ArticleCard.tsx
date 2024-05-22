@@ -31,6 +31,12 @@ export default function ArticleCard({
         <small>{`${year}-${month}-${day}`}</small>
         {image && <Image alt="Article Image" src={image} width="185rem" />}
       </CardBody>
+      <Image
+        className="ml-3"
+        src="/favorite.svg"
+        height={40}
+        width={40}
+      ></Image>
     </Card>
   );
 }

@@ -48,5 +48,5 @@ export const handleDelete = async (feedName: string, userId: string) => {
       },
     },
   });
-  redirect("/feeds");
+  return deleteFeed;
 };
