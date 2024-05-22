@@ -26,6 +26,11 @@ export default function Header() {
             <Link href="/feeds">Feeds</Link>
           </NavbarItem>
         </SignedIn>
+        <SignedIn>
+          <NavbarItem>
+            <Link href="/feeds/favorites">Favorites</Link>
+          </NavbarItem>
+        </SignedIn>
         <SignedOut>
           <NavbarItem>
             <Link href="/sign-up" passHref>

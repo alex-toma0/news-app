@@ -48,6 +48,18 @@ export const handleDelete = async (feedName: string, userId: string) => {
   return deleteFeed;
 };
 
+export const getFavorites = async () => {
+  const { userId } = auth();
+  if (!userId) {
+    return;
+  }
+  const favorites = await prisma.userFavorites.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+  return favorites;
+};
 export const uploadFavorite = async (
   title: string,
   source: string,
@@ -70,4 +82,37 @@ export const uploadFavorite = async (
     },
   });
   return favorite;
+};
+
+export const unfavorite = async (url: string) => {
+  const { userId } = auth();
+  if (!userId) {
+    return;
+  }
+  const deleteFavorite = await prisma.userFavorites.delete({
+    where: {
+      user_id_url: {
+        user_id: userId,
+        url: url,
+      },
+    },
+  });
+  return deleteFavorite;
+};
+
+export const isFavorite = async (url: string) => {
+  const { userId } = auth();
+  if (!userId) {
+    return;
+  }
+  const favorite = await prisma.userFavorites.findUnique({
+    where: {
+      user_id_url: {
+        user_id: userId,
+        url: url,
+      },
+    },
+  });
+  if (!favorite) return false;
+  return true;
 };

@@ -1,22 +1,28 @@
 "use client";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
-import { uploadFavorite } from "../actions";
+import { isFavorite, unfavorite, uploadFavorite } from "../actions";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function ArticleCard({
   source,
   title,
   uploadTime,
-  author,
   image,
   url,
+  favorite,
 }: {
   source: string;
   title: string;
   uploadTime: string;
-  author: string;
   image: string;
   url: string;
+  favorite: boolean;
 }) {
+  let imgSrc = "/favorite.svg";
+  if (favorite) {
+    imgSrc = "/favorite-clicked.svg";
+  }
+
   const router = useRouter();
   const handleFavorite = async (
     title: string,
@@ -25,11 +31,22 @@ export default function ArticleCard({
     image: string,
     uploadDate: Date
   ) => {
-    const uploaded = uploadFavorite(title, source, url, image, uploadDate);
-    if (!uploaded) {
-      alert("Your feed couldn't be favorited");
+    if (!favorite) {
+      const uploaded = uploadFavorite(title, source, url, image, uploadDate);
+      if (!uploaded) {
+        alert("The article couldn't be favorited");
+      } else {
+        alert("The article has been favorited!");
+        router.refresh();
+      }
+    } else {
+      if (!unfavorite(url)) {
+        alert("The article couldn't be unfavorited!");
+      } else {
+        alert("The article has been unfavorited!");
+        router.refresh();
+      }
     }
-    alert("Your feed has been favorited!");
   };
   const uploadDate = new Date(uploadTime);
   const day = uploadDate.getDay();
@@ -51,12 +68,7 @@ export default function ArticleCard({
       <button
         onClick={() => handleFavorite(title, source, url, image, uploadDate)}
       >
-        <Image
-          className="ml-3"
-          src="/favorite.svg"
-          height={40}
-          width={40}
-        ></Image>
+        <Image className="ml-3" src={imgSrc} height={40} width={40}></Image>
       </button>
     </Card>
   );
