@@ -36,7 +36,7 @@ export const getFeed = async (feedName: string) => {
   });
   return feed;
 };
-export const handleDelete = async (feedName: string, userId: string) => {
+export const deleteFeed = async (feedName: string, userId: string) => {
   const deleteFeed = await prisma.userFeeds.delete({
     where: {
       user_id_feed_name: {
@@ -48,6 +48,24 @@ export const handleDelete = async (feedName: string, userId: string) => {
   return deleteFeed;
 };
 
+export const editFeedName = async (
+  feedName: string,
+  userId: string,
+  newName: string
+) => {
+  const editedFeed = await prisma.userFeeds.update({
+    where: {
+      user_id_feed_name: {
+        user_id: userId,
+        feed_name: feedName,
+      },
+    },
+    data: {
+      feed_name: newName,
+    },
+  });
+  return editedFeed;
+};
 export const getFavorites = async () => {
   const { userId } = auth();
   if (!userId) {

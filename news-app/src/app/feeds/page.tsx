@@ -31,7 +31,7 @@ export default async function Page() {
             className="table-row even:bg-gray-600"
           >
             <Link
-              href={`/feeds/${feed.user_id}/${feed.feed_name}/${feed.categories}/${feed.languages}`}
+              href={`/feeds/${feed.feed_name}/${feed.categories}/${feed.languages}`}
             >
               <div className="table-cell py-1 px-2">{feed.feed_name}</div>
             </Link>
