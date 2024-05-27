@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { Sign } from "crypto";
+import SearchBar from "./SearchBar";
 export default function Header() {
   return (
     <Navbar className="top-0">
@@ -16,10 +17,10 @@ export default function Header() {
       </NavbarBrand>
       <NavbarContent justify="center">
         <NavbarItem>
-          <Link href="/">Home</Link>
+          <SearchBar />
         </NavbarItem>
         <NavbarItem>
-          <Link href="/about">About</Link>
+          <Link href="/">Home</Link>
         </NavbarItem>
         <SignedIn>
           <NavbarItem>

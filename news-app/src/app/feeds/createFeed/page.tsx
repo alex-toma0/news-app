@@ -19,7 +19,7 @@ const languageObj: any = {
 const languages = Object.keys(languageObj);
 export default function Page() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col place-items-center gap-5 pt-10">
       <h1>Create your feed</h1>
       <form action={createFeed} className="flex flex-col gap-3">
         <Input type="text" name="feedName" placeholder="Your feed's name" />
