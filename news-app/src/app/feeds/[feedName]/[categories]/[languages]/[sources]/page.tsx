@@ -1,8 +1,7 @@
-import ArticleCard from "@/app/components/ArticleCard";
-import { Article } from "@/app/page";
 import DeleteFeed from "@/app/components/DeleteFeed";
-import { isFavorite } from "@/app/actions";
 import { auth } from "@clerk/nextjs/server";
+import ArticleList from "@/app/components/ArticleList";
+import Filters from "@/app/components/Filters";
 const getArticlesByCategory = async (
   category: string,
   languages: string,
@@ -31,7 +30,6 @@ export default async function Page({
     sources: string;
   };
 }) {
-  const repeatedHeadlines = new Map<string, boolean>();
   const articles = await getArticlesByCategory(
     params.categories,
     params.languages,
@@ -39,34 +37,11 @@ export default async function Page({
   );
   const { userId } = auth();
   if (articles.length > 0) {
-    const filteredArticles: Article[] = [];
-    articles.forEach((article: Article) => {
-      if (!repeatedHeadlines.has(article.title)) {
-        filteredArticles.push(article);
-      }
-      repeatedHeadlines.set(article.title, true);
-    });
-    const updatedArticles = await Promise.all(
-      filteredArticles.map(async (article: any) => {
-        const favorite = await isFavorite(article.url);
-        return { ...article, favorite };
-      })
-    );
-    console.log(updatedArticles);
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
         <DeleteFeed feedName={params.feedName} userId={userId} />
-        {updatedArticles.map((article: Article) => (
-          <ArticleCard
-            key={`${article.title}_${article.published_at}`}
-            title={article.title}
-            source={article.source}
-            uploadTime={article.published_at}
-            image={article.image}
-            url={article.url}
-            favorite={article.favorite}
-          ></ArticleCard>
-        ))}
+        <Filters />
+        <ArticleList articles={articles} />
       </div>
     );
   } else {
