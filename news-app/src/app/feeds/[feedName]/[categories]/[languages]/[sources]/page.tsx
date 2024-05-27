@@ -3,10 +3,7 @@ import { Article } from "@/app/page";
 import DeleteFeed from "@/app/components/DeleteFeed";
 import { isFavorite } from "@/app/actions";
 import { auth } from "@clerk/nextjs/server";
-import PaginationControls from "@/app/components/PaginationControls";
 const getArticlesByCategory = async (
-  page: number,
-  limit: number,
   category: string,
   languages: string,
   sources: string
@@ -15,9 +12,7 @@ const getArticlesByCategory = async (
     const res = await fetch(
       `http://api.mediastack.com/v1/news?access_key=${
         process.env.API_KEY
-      }&categories=${category}&languages=${languages}&sources=${sources}&limit=${limit}&offset=${
-        (page - 1) * limit
-      }`
+      }&categories=${category}&languages=${languages}&sources=${sources}&limit=${50}`
     );
     const articles = await res.json();
     return articles["data"];
@@ -28,7 +23,6 @@ const getArticlesByCategory = async (
 };
 export default async function Page({
   params,
-  searchParams,
 }: {
   params: {
     feedName: string;
@@ -36,16 +30,9 @@ export default async function Page({
     languages: string;
     sources: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const repeatedHeadlines = new Map<string, boolean>();
-  const page =
-    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
-  const limit =
-    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 10;
   const articles = await getArticlesByCategory(
-    page,
-    limit,
     params.categories,
     params.languages,
     params.sources
@@ -80,7 +67,6 @@ export default async function Page({
             favorite={article.favorite}
           ></ArticleCard>
         ))}
-        <PaginationControls hasNextPage={true} hasPrevPage={page === 1} />
       </div>
     );
   } else {

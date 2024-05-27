@@ -1,6 +1,5 @@
 import ArticleCard from "./components/ArticleCard";
 import { isFavorite } from "./actions";
-import PaginationControls from "./components/PaginationControls";
 export interface Article {
   title: string;
   author: string;
@@ -10,13 +9,11 @@ export interface Article {
   url: string;
   favorite: boolean;
 }
-const getTopArticles = async (page: number, limit: number) => {
+const getTopArticles = async () => {
   const res = await fetch(
     `http://api.mediastack.com/v1/news?access_key=${
       process.env.API_KEY
-    }&languages=en&sort=popularity&date=2024-5-1,2024-6-1&limit=${limit}&offset=${
-      (page - 1) * limit
-    }`
+    }&languages=en&sort=popularity&date=2024-5-1,2024-6-1&limit=${50}`
   );
 
   if (!res.ok) {
@@ -25,17 +22,10 @@ const getTopArticles = async (page: number, limit: number) => {
   const topArticles = await res.json();
   return topArticles["data"];
 };
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Page() {
   const repeatedHeadlines = new Map<string, boolean>();
-  const page =
-    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
-  const limit =
-    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 10;
-  const articles = await getTopArticles(page, limit);
+
+  const articles = await getTopArticles();
 
   if (articles.length > 0) {
     const filteredArticles: Article[] = [];
@@ -67,7 +57,6 @@ export default async function Page({
             ></ArticleCard>
           );
         })}
-        <PaginationControls hasNextPage={true} hasPrevPage={page === 1} />
       </div>
     );
   } else {
