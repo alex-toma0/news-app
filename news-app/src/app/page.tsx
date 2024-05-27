@@ -28,7 +28,6 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const repeatedHeadlines = new Map<string, boolean>();
   let sort = "popularity";
   if (typeof searchParams.sort === "string") sort = searchParams.sort;
   const articles = await getTopArticles(sort);

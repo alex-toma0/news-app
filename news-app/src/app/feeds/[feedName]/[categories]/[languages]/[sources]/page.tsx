@@ -8,11 +8,15 @@ const getArticlesByCategory = async (
   sources: string
 ) => {
   try {
-    const res = await fetch(
-      `http://api.mediastack.com/v1/news?access_key=${
-        process.env.API_KEY
-      }&categories=${category}&languages=${languages}&sources=${sources}&limit=${50}`
-    );
+    let baseURL = `http://api.mediastack.com/v1/news?access_key=${
+      process.env.API_KEY
+    }&limit=${50}`;
+    // Building url based on the params
+    if (category !== "all") baseURL += `&categories=${category}`;
+    if (languages !== "all") baseURL += `&languages=${languages}`;
+    if (sources !== "all") baseURL += `&sources=${sources}`;
+
+    const res = await fetch(baseURL);
     const articles = await res.json();
     return articles["data"];
   } catch (err) {

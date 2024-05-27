@@ -14,6 +14,7 @@ const getUserFeeds = async () => {
 };
 export default async function Page() {
   const feeds = await getUserFeeds();
+
   let feedList = <></>;
   if (feeds.length === 0) {
     feedList = <p>You have no custom feeds, start by creating one!</p>;
@@ -26,21 +27,29 @@ export default async function Page() {
           <div className="table-cell py-2 px-2 text-left">Language</div>
           <div className="table-cell py-2 px-2 text-left">Sources</div>
         </div>
-        {feeds.map((feed) => (
-          <div
-            key={feed.feed_name + feed.categories}
-            className="table-row even:bg-gray-600"
-          >
-            <Link
-              href={`/feeds/${feed.feed_name}/${feed.categories}/${feed.languages}/${feed.sources}`}
+        {feeds.map((feed) => {
+          let redirectURL = `/feeds/${feed.feed_name}/`;
+          if (feed.categories) redirectURL += `${feed.categories}/`;
+          else redirectURL += "/all";
+          if (feed.languages) redirectURL += `${feed.languages}/`;
+          else redirectURL += "/all";
+          if (feed.sources) redirectURL += `${feed.sources}/`;
+          else redirectURL += "/all";
+
+          return (
+            <div
+              key={feed.feed_name + feed.categories}
+              className="table-row even:bg-gray-600"
             >
-              <div className="table-cell py-1 px-2">{feed.feed_name}</div>
-            </Link>
-            <div className="table-cell">{feed.categories}</div>
-            <div className="table-cell">{feed.languages}</div>
-            <div className="table-cell">{feed.sources}</div>
-          </div>
-        ))}
+              <Link href={redirectURL}>
+                <div className="table-cell py-1 px-2">{feed.feed_name}</div>
+              </Link>
+              <div className="table-cell">{feed.categories}</div>
+              <div className="table-cell">{feed.languages}</div>
+              <div className="table-cell">{feed.sources}</div>
+            </div>
+          );
+        })}
       </div>
     );
   }
