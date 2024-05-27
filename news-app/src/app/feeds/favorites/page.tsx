@@ -18,6 +18,7 @@ export default async function Page() {
             image={favArticle.image}
             url={favArticle.url}
             favorite={true}
+            isLoggedIn={true}
           ></ArticleCard>
         ))}
       </div>

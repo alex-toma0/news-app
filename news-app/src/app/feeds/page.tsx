@@ -5,6 +5,9 @@ import prisma from "../utils/prisma";
 import Image from "next/image";
 const getUserFeeds = async () => {
   const { userId } = auth();
+  if (!userId) {
+    return null;
+  }
   const feeds = await prisma.userFeeds.findMany({
     where: {
       user_id: userId,
@@ -16,7 +19,7 @@ export default async function Page() {
   const feeds = await getUserFeeds();
 
   let feedList = <></>;
-  if (feeds.length === 0) {
+  if (!feeds || feeds.length === 0) {
     feedList = <p>You have no custom feeds, start by creating one!</p>;
   } else {
     feedList = (

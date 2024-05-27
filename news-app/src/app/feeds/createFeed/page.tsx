@@ -27,6 +27,7 @@ export default function Page() {
           type="text"
           name="feedName"
           placeholder="Your feed's name"
+          isRequired
         />
         <Select
           label="Choose the categories"

@@ -2,11 +2,16 @@ import { Article } from "../page";
 import { isFavorite } from "../actions";
 import Filters from "./Filters";
 import ArticleCard from "./ArticleCard";
+import { auth } from "@clerk/nextjs/server";
+
 export default async function ArticleList({
   articles,
 }: {
   articles: Article[];
 }) {
+  let isLoggedIn = true;
+  const { userId } = auth();
+  if (!userId) isLoggedIn = false;
   const repeatedHeadlines = new Map<string, boolean>();
 
   const filteredArticles: Article[] = [];
@@ -34,6 +39,7 @@ export default async function ArticleList({
             image={article.image}
             url={article.url}
             favorite={article.favorite}
+            isLoggedIn={isLoggedIn}
           ></ArticleCard>
         );
       })}

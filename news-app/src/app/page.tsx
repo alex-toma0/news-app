@@ -1,6 +1,6 @@
-import { isFavorite } from "./actions";
 import Filters from "./components/Filters";
 import ArticleList from "./components/ArticleList";
+import { getLocalTimeZone, today } from "@internationalized/date";
 export interface Article {
   title: string;
   author: string;
@@ -10,12 +10,15 @@ export interface Article {
   url: string;
   favorite: boolean;
 }
-const getTopArticles = async (sort: string = "popularity") => {
-  const res = await fetch(
-    `http://api.mediastack.com/v1/news?access_key=${
-      process.env.API_KEY
-    }&languages=en&sort=${sort}&limit=${50}`
-  );
+const getTopArticles = async (
+  sort: string = "popularity",
+  startDate: string,
+  endDate: string
+) => {
+  const url = `http://api.mediastack.com/v1/news?access_key=${
+    process.env.API_KEY
+  }&languages=en&sort=${sort}&limit=${50}&date=${startDate},${endDate}`;
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new Error("Couldn't fetch articles!");
@@ -29,8 +32,21 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   let sort = "popularity";
+  let endDate = today(getLocalTimeZone()).toString();
+  let startDate = today(getLocalTimeZone()).set({ day: 1 }).toString();
   if (typeof searchParams.sort === "string") sort = searchParams.sort;
-  const articles = await getTopArticles(sort);
+  if (
+    typeof searchParams.startDate === "string" &&
+    searchParams.startDate.length > 0
+  )
+    startDate = searchParams.startDate;
+  if (
+    typeof searchParams.endDate === "string" &&
+    searchParams.endDate.length > 0
+  )
+    endDate = searchParams.endDate;
+
+  const articles = await getTopArticles(sort, startDate!, endDate!);
 
   if (articles.length > 0) {
     return (

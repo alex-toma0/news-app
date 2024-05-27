@@ -10,6 +10,7 @@ export default function ArticleCard({
   image,
   url,
   favorite,
+  isLoggedIn,
 }: {
   source: string;
   title: string;
@@ -17,10 +18,11 @@ export default function ArticleCard({
   image: string;
   url: string;
   favorite: boolean;
+  isLoggedIn: boolean;
 }) {
-  let imgSrc = "/favorite.svg";
+  let favSrc = "/favorite.svg";
   if (favorite) {
-    imgSrc = "/favorite-clicked.svg";
+    favSrc = "/favorite-clicked.svg";
   }
 
   const router = useRouter();
@@ -49,7 +51,7 @@ export default function ArticleCard({
     }
   };
   const uploadDate = new Date(uploadTime);
-  const day = uploadDate.getDay();
+  const day = uploadDate.getDate();
   const month = uploadDate.getMonth() + 1;
   const year = uploadDate.getFullYear();
 
@@ -68,7 +70,9 @@ export default function ArticleCard({
       <button
         onClick={() => handleFavorite(title, source, url, image, uploadDate)}
       >
-        <Image className="ml-3" src={imgSrc} height={40} width={40}></Image>
+        {isLoggedIn && (
+          <Image className="ml-3" src={favSrc} height={40} width={40}></Image>
+        )}
       </button>
     </Card>
   );
