@@ -13,8 +13,9 @@ datasource db {
 model userFeeds {
   user_id    String
   feed_name  String
-  categories String
-  languages  String
+  categories String?
+  languages  String?
+  sources    String?
 
   @@id([user_id, feed_name])
 }

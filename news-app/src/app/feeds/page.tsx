@@ -24,6 +24,7 @@ export default async function Page() {
           <div className="table-cell py-2 px-2 text-left">Name</div>
           <div className="table-cell py-2 px-2 text-left">Categories</div>
           <div className="table-cell py-2 px-2 text-left">Language</div>
+          <div className="table-cell py-2 px-2 text-left">Sources</div>
         </div>
         {feeds.map((feed) => (
           <div
@@ -31,19 +32,20 @@ export default async function Page() {
             className="table-row even:bg-gray-600"
           >
             <Link
-              href={`/feeds/${feed.feed_name}/${feed.categories}/${feed.languages}`}
+              href={`/feeds/${feed.feed_name}/${feed.categories}/${feed.languages}/${feed.sources}`}
             >
               <div className="table-cell py-1 px-2">{feed.feed_name}</div>
             </Link>
             <div className="table-cell">{feed.categories}</div>
             <div className="table-cell">{feed.languages}</div>
+            <div className="table-cell">{feed.sources}</div>
           </div>
         ))}
       </div>
     );
   }
   return (
-    <div className="py-10 pl-12 flex flex-col gap-7">
+    <div className="py-10 pl-12 flex flex-col place-items-center gap-7 ">
       <h1 className="text-3xl font-bold">Your Feeds</h1>
       <small className="font-extralight">View or Create a custom feed</small>
       <Divider />

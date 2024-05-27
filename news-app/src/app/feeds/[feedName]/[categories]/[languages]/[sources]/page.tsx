@@ -8,13 +8,14 @@ const getArticlesByCategory = async (
   page: number,
   limit: number,
   category: string,
-  languages: string
+  languages: string,
+  sources: string
 ) => {
   try {
     const res = await fetch(
       `http://api.mediastack.com/v1/news?access_key=${
         process.env.API_KEY
-      }&categories=${category}&languages=${languages}&limit=${limit}&offset=${
+      }&categories=${category}&languages=${languages}&sources=${sources}&limit=${limit}&offset=${
         (page - 1) * limit
       }`
     );
@@ -33,6 +34,7 @@ export default async function Page({
     feedName: string;
     categories: string;
     languages: string;
+    sources: string;
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
@@ -45,7 +47,8 @@ export default async function Page({
     page,
     limit,
     params.categories,
-    params.languages
+    params.languages,
+    params.sources
   );
   const { userId } = auth();
   if (articles.length > 0) {

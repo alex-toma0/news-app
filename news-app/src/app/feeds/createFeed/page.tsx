@@ -22,10 +22,15 @@ export default function Page() {
     <div className="flex flex-col place-items-center gap-5 pt-10">
       <h1>Create your feed</h1>
       <form action={createFeed} className="flex flex-col gap-3">
-        <Input type="text" name="feedName" placeholder="Your feed's name" />
+        <Input
+          label="Name"
+          type="text"
+          name="feedName"
+          placeholder="Your feed's name"
+        />
         <Select
-          label="Choose your categories"
-          placeholder="Select a category"
+          label="Choose the categories"
+          placeholder="Select the categories"
           selectionMode="multiple"
           name="feedCategory"
         >
@@ -36,9 +41,9 @@ export default function Page() {
           ))}
         </Select>
         <Select
-          label="Choose your language"
-          placeholder="Select a language"
-          selectionMode="single"
+          label="Choose the languages"
+          placeholder="Select the languages"
+          selectionMode="multiple"
           name="languages"
         >
           {languages.map((language) => (
@@ -50,6 +55,12 @@ export default function Page() {
             </SelectItem>
           ))}
         </Select>
+        <Input
+          type="text"
+          name="sources"
+          label="Choose the news sources"
+          placeholder="source1,source2,..."
+        />
         <Button type="submit">Create feed</Button>
       </form>
     </div>

@@ -6,6 +6,7 @@ export async function createFeed(formData: FormData) {
   const name = formData.get("feedName") as string;
   const feedCategories = formData.getAll("feedCategory");
   const languages = formData.getAll("languages");
+  const sources = formData.getAll("sources");
   const { userId } = auth();
   if (!userId) {
     return { msg: "user is not authenticated!" };
@@ -14,8 +15,9 @@ export async function createFeed(formData: FormData) {
     data: {
       user_id: userId,
       feed_name: name,
-      categories: feedCategories.toString(),
-      languages: languages.toString(),
+      categories: feedCategories.length > 0 ? feedCategories.toString() : null,
+      languages: languages.length > 0 ? languages.toString() : null,
+      sources: sources.length > 0 ? sources.toString() : null,
     },
   });
   redirect("/feeds");
