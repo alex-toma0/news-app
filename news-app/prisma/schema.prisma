@@ -10,27 +10,39 @@ datasource db {
   url      = "file:/home/alex/Documents/Databases/news.db"
 }
 
-model userFeeds {
-  user_id    String
-  feed_name  String
+model User {
+  id            String          @id
+  roleId        Int
+  role          Role            @relation(fields: [roleId], references: [id])
+  userFeeds     UserFeeds[]
+  userFavorites UserFavorites[]
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model UserFeeds {
+  userId     String
+  feedName   String
   categories String?
   languages  String?
   sources    String?
+  user       User    @relation(fields: [userId], references: [id])
 
-  @@id([user_id, feed_name])
+  @@id([userId, feedName])
 }
 
-model userFavorites {
-  user_id    String
+model UserFavorites {
+  userId     String
   source     String
   title      String
   url        String
   image      String?
   uploadDate DateTime
+  user       User     @relation(fields: [userId], references: [id])
 
-  @@id([user_id, url])
-}
-
-model users {
-  user_id String @id
+  @@id([userId, url])
 }

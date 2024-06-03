@@ -10,7 +10,7 @@ const getUserFeeds = async () => {
   }
   const feeds = await prisma.userFeeds.findMany({
     where: {
-      user_id: userId,
+      userId: userId,
     },
   });
   return feeds;
@@ -31,7 +31,7 @@ export default async function Page() {
           <div className="table-cell py-2 px-2 text-left">Sources</div>
         </div>
         {feeds.map((feed) => {
-          let redirectURL = `/feeds/${feed.feed_name}/`;
+          let redirectURL = `/feeds/${feed.feedName}/`;
           if (feed.categories) redirectURL += `${feed.categories}/`;
           else redirectURL += "/all";
           if (feed.languages) redirectURL += `${feed.languages}/`;
@@ -41,11 +41,11 @@ export default async function Page() {
 
           return (
             <div
-              key={feed.feed_name + feed.categories}
+              key={feed.feedName + feed.categories}
               className="table-row even:bg-gray-600"
             >
               <Link href={redirectURL}>
-                <div className="table-cell py-1 px-2">{feed.feed_name}</div>
+                <div className="table-cell py-1 px-2">{feed.feedName}</div>
               </Link>
               <div className="table-cell">{feed.categories}</div>
               <div className="table-cell">{feed.languages}</div>

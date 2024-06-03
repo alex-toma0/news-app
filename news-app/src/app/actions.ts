@@ -13,8 +13,8 @@ export async function createFeed(formData: FormData) {
   }
   const feed = await prisma.userFeeds.create({
     data: {
-      user_id: userId,
-      feed_name: name,
+      userId: userId,
+      feedName: name,
       categories: feedCategories.length > 0 ? feedCategories.toString() : null,
       languages: languages.length > 0 ? languages.toString() : null,
       sources: sources.length > 0 ? sources.toString() : null,
@@ -30,9 +30,9 @@ export const getFeed = async (feedName: string) => {
   }
   const feed = await prisma.userFeeds.findUnique({
     where: {
-      user_id_feed_name: {
-        user_id: userId,
-        feed_name: decodeURIComponent(feedName),
+      userId_feedName: {
+        userId: userId,
+        feedName: decodeURIComponent(feedName),
       },
     },
   });
@@ -41,9 +41,9 @@ export const getFeed = async (feedName: string) => {
 export const deleteFeed = async (feedName: string, userId: string) => {
   const deleteFeed = await prisma.userFeeds.delete({
     where: {
-      user_id_feed_name: {
-        user_id: userId,
-        feed_name: decodeURIComponent(feedName),
+      userId_feedName: {
+        userId: userId,
+        feedName: decodeURIComponent(feedName),
       },
     },
   });
@@ -57,13 +57,13 @@ export const editFeedName = async (
 ) => {
   const editedFeed = await prisma.userFeeds.update({
     where: {
-      user_id_feed_name: {
-        user_id: userId,
-        feed_name: feedName,
+      userId_feedName: {
+        userId: userId,
+        feedName: feedName,
       },
     },
     data: {
-      feed_name: newName,
+      feedName: newName,
     },
   });
   return editedFeed;
@@ -75,7 +75,7 @@ export const getFavorites = async () => {
   }
   const favorites = await prisma.userFavorites.findMany({
     where: {
-      user_id: userId,
+      userId: userId,
     },
   });
   return favorites;
@@ -93,7 +93,7 @@ export const uploadFavorite = async (
   }
   const favorite = await prisma.userFavorites.create({
     data: {
-      user_id: userId,
+      userId: userId,
       title: title,
       source: source,
       url: url,
@@ -111,8 +111,8 @@ export const unfavorite = async (url: string) => {
   }
   const deleteFavorite = await prisma.userFavorites.delete({
     where: {
-      user_id_url: {
-        user_id: userId,
+      userId_url: {
+        userId: userId,
         url: url,
       },
     },
@@ -127,8 +127,8 @@ export const isFavorite = async (url: string) => {
   }
   const favorite = await prisma.userFavorites.findUnique({
     where: {
-      user_id_url: {
-        user_id: userId,
+      userId_url: {
+        userId: userId,
         url: url,
       },
     },

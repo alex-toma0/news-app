@@ -55,12 +55,14 @@ export async function POST(req: Request) {
   console.log(`Webhook with and ID of ${id} and name of  type of ${eventType}`);
   console.log("Webhook body:", body);
 
-  const createUser = await prisma.users.create({
+  const createUser = await prisma.user.create({
     data: {
-      user_id: id as string,
+      id: id as string,
+      roleId: 1,
     },
   });
   if (!createUser)
     return new Response("User couldn't be created!", { status: 500 });
+
   return new Response("User was created succesfully!", { status: 200 });
 }
