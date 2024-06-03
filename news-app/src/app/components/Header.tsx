@@ -7,7 +7,6 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
-import { Sign } from "crypto";
 import SearchBar from "./SearchBar";
 export default function Header() {
   return (
@@ -15,10 +14,12 @@ export default function Header() {
       <NavbarBrand>
         <p>News App</p>
       </NavbarBrand>
-      <NavbarContent justify="center">
+      <NavbarContent justify="start">
         <NavbarItem>
           <SearchBar />
         </NavbarItem>
+      </NavbarContent>
+      <NavbarContent justify="center">
         <NavbarItem>
           <Link href="/">Home</Link>
         </NavbarItem>

@@ -30,3 +30,7 @@ model userFavorites {
 
   @@id([user_id, url])
 }
+
+model users {
+  user_id String @id
+}
