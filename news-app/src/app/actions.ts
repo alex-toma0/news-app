@@ -23,6 +23,30 @@ export async function createFeed(formData: FormData) {
   redirect("/feeds");
 }
 
+export async function editFeed(formData: FormData) {
+  const newName = formData.get("feedName") as string;
+  const oldName = formData.get("originalName") as string;
+  const feedCategories = formData.getAll("feedCategories");
+  const languages = formData.getAll("feedLanguages");
+  const sources = formData.getAll("feedSources");
+  const userId = formData.get("userId") as string;
+
+  const updateFeed = await prisma.userFeeds.update({
+    data: {
+      feedName: newName,
+      categories: feedCategories.length > 0 ? feedCategories.toString() : null,
+      languages: languages.length > 0 ? languages.toString() : null,
+      sources: sources.length > 0 ? sources.toString() : null,
+    },
+    where: {
+      userId_feedName: {
+        userId: userId,
+        feedName: oldName,
+      },
+    },
+  });
+}
+
 export const getFeed = async (feedName: string) => {
   const { userId } = auth();
   if (!userId) {
