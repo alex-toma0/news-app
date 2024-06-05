@@ -1,6 +1,3 @@
-import ArticleCard from "@/app/components/ArticleCard";
-import { Article } from "@/app/page";
-import { isFavorite } from "@/app/actions";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import ArticleList from "@/app/components/ArticleList";
 import Filters from "@/app/components/Filters";

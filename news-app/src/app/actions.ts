@@ -26,17 +26,20 @@ export async function createFeed(formData: FormData) {
 export async function editFeed(formData: FormData) {
   const newName = formData.get("feedName") as string;
   const oldName = formData.get("originalName") as string;
-  const feedCategories = formData.getAll("feedCategories");
-  const languages = formData.getAll("feedLanguages");
-  const sources = formData.getAll("feedSources");
+  const feedCategories = formData.get("feedCategories") as string;
+  const oldCategories = formData.get("originalCategories") as string;
+  const oldLanguages = formData.get("originalLanguages") as string;
+  const languages = formData.get("feedLanguages") as string;
+  const oldSources = formData.get("originalSources") as string;
+  const sources = formData.get("feedSources") as string;
   const userId = formData.get("userId") as string;
 
   const updateFeed = await prisma.userFeeds.update({
     data: {
-      feedName: newName,
-      categories: feedCategories.length > 0 ? feedCategories.toString() : null,
-      languages: languages.length > 0 ? languages.toString() : null,
-      sources: sources.length > 0 ? sources.toString() : null,
+      feedName: newName.length > 0 ? newName : oldName,
+      categories: feedCategories.length > 0 ? feedCategories : oldCategories,
+      languages: languages.length > 0 ? languages : oldLanguages,
+      sources: sources.length > 0 ? sources : oldSources,
     },
     where: {
       userId_feedName: {
@@ -45,6 +48,7 @@ export async function editFeed(formData: FormData) {
       },
     },
   });
+  redirect(`/admin/userList/${userId}`);
 }
 
 export const getFeed = async (feedName: string) => {
@@ -126,6 +130,51 @@ export const uploadFavorite = async (
     },
   });
   return favorite;
+};
+
+export const editFavorite = async (formData: FormData) => {
+  const userId = formData.get("userId") as string;
+  const oldSource = formData.get("originalSource") as string;
+  const oldTitle = formData.get("originalTitle") as string;
+  const oldURL = formData.get("originalUrl") as string;
+  const oldImage = formData.get("originalImage") as string;
+  const oldDateString = formData.get("originalDate") as string;
+  const newSource = formData.get("source") as string;
+  const newTitle = formData.get("title") as string;
+  const newURL = formData.get("url") as string;
+  const newImage = formData.get("image") as string;
+  const newDateString = formData.get("date") as string;
+
+  const updateFavorite = await prisma.userFavorites.update({
+    data: {
+      source: newSource.length > 0 ? newSource : oldSource,
+      title: newTitle.length > 0 ? newTitle : oldTitle,
+      url: newURL.length > 0 ? newURL : oldURL,
+      image: newImage.length > 0 ? newImage : oldImage,
+      uploadDate:
+        newDateString.length > 0
+          ? new Date(newDateString)
+          : new Date(oldDateString),
+    },
+    where: {
+      userId_url: {
+        userId: userId,
+        url: oldURL,
+      },
+    },
+  });
+  redirect(`/admin/userList/${userId}`);
+};
+export const deleteFavorite = async (userId: string, url: string) => {
+  const deleteFavorite = await prisma.userFavorites.delete({
+    where: {
+      userId_url: {
+        userId: userId,
+        url: url,
+      },
+    },
+  });
+  return deleteFavorite;
 };
 
 export const unfavorite = async (url: string) => {

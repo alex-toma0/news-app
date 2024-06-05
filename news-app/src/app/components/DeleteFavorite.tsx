@@ -1,21 +1,22 @@
 "use client";
 import { Button } from "@nextui-org/react";
-import { deleteFeed } from "../actions";
+import { deleteFavorite } from "../actions";
 import { useRouter } from "next/navigation";
-export default async function DeleteFeed({
+export default function DeleteFavorite({
   userId,
-  feedName,
+  url,
 }: {
   userId: string;
-  feedName: string;
+  url: string;
 }) {
   const router = useRouter();
   return (
     <>
       <Button
         variant="flat"
+        color="danger"
         onClick={() => {
-          deleteFeed(feedName, userId);
+          deleteFavorite(userId, url);
           router.push(`/admin/userList/${userId}`);
         }}
       >

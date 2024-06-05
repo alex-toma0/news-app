@@ -1,4 +1,4 @@
-import DeleteFeed from "@/app/components/DeleteFeed";
+import FeedBar from "@/app/components/FeedBar";
 import { auth } from "@clerk/nextjs/server";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import ArticleList from "@/app/components/ArticleList";
@@ -68,7 +68,7 @@ export default async function Page({
   if (articles.length > 0 && userId) {
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
-        <DeleteFeed feedName={params.feedName} userId={userId} />
+        <FeedBar feedName={params.feedName} userId={userId} />
         <Filters />
         <ArticleList articles={articles} />
       </div>

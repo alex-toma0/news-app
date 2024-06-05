@@ -31,12 +31,12 @@ export default async function Page() {
           <div className="table-cell py-2 px-2 text-left">Sources</div>
         </div>
         {feeds.map((feed) => {
-          let redirectURL = `/feeds/${feed.feedName}/`;
-          if (feed.categories) redirectURL += `${feed.categories}/`;
+          let redirectURL = `/feeds/${feed.feedName}`;
+          if (feed.categories) redirectURL += `/${feed.categories}`;
           else redirectURL += "/all";
-          if (feed.languages) redirectURL += `${feed.languages}/`;
+          if (feed.languages) redirectURL += `/${feed.languages}`;
           else redirectURL += "/all";
-          if (feed.sources) redirectURL += `${feed.sources}/`;
+          if (feed.sources) redirectURL += `/${feed.sources}`;
           else redirectURL += "/all";
 
           return (
