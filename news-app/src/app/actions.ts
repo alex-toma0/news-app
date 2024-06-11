@@ -113,6 +113,7 @@ export const uploadFavorite = async (
   source: string,
   url: string,
   image: string,
+  category: string,
   uploadDate: Date
 ) => {
   const { userId } = auth();
@@ -127,6 +128,7 @@ export const uploadFavorite = async (
       url: url,
       image: image,
       uploadDate: uploadDate,
+      category: category,
     },
   });
   return favorite;
@@ -144,6 +146,8 @@ export const editFavorite = async (formData: FormData) => {
   const newURL = formData.get("url") as string;
   const newImage = formData.get("image") as string;
   const newDateString = formData.get("date") as string;
+  const oldCategory = formData.get("originalCategory") as string;
+  const newCategory = formData.get("category") as string;
 
   const updateFavorite = await prisma.userFavorites.update({
     data: {
@@ -155,6 +159,7 @@ export const editFavorite = async (formData: FormData) => {
         newDateString.length > 0
           ? new Date(newDateString)
           : new Date(oldDateString),
+      category: newCategory.length > 0 ? newCategory : oldCategory,
     },
     where: {
       userId_url: {
@@ -208,4 +213,17 @@ export const isFavorite = async (url: string) => {
   });
   if (!favorite) return false;
   return true;
+};
+
+export const getArticleCategories = async () => {
+  const articleCategories = await prisma.userFavorites.groupBy({
+    by: ["category"],
+    _count: {
+      category: true,
+    },
+  });
+  return articleCategories.map((article) => ({
+    category: article.category,
+    count: article._count.category,
+  }));
 };

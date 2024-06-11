@@ -9,6 +9,7 @@ export interface Article {
   image: string;
   url: string;
   favorite: boolean;
+  category: string;
 }
 const getTopArticles = async (
   sort: string = "popularity",
@@ -18,7 +19,7 @@ const getTopArticles = async (
   const url = `http://api.mediastack.com/v1/news?access_key=${
     process.env.API_KEY
   }&languages=en&sort=${sort}&limit=${50}&date=${startDate},${endDate}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     throw new Error("Couldn't fetch articles!");

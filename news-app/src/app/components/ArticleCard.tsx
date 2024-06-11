@@ -11,6 +11,7 @@ export default function ArticleCard({
   url,
   favorite,
   isLoggedIn,
+  category,
 }: {
   source: string;
   title: string;
@@ -19,6 +20,7 @@ export default function ArticleCard({
   url: string;
   favorite: boolean;
   isLoggedIn: boolean;
+  category: string;
 }) {
   let favSrc = "/favorite.svg";
   if (favorite) {
@@ -31,10 +33,18 @@ export default function ArticleCard({
     source: string,
     url: string,
     image: string,
+    category: string,
     uploadDate: Date
   ) => {
     if (!favorite) {
-      const uploaded = uploadFavorite(title, source, url, image, uploadDate);
+      const uploaded = uploadFavorite(
+        title,
+        source,
+        url,
+        image,
+        category,
+        uploadDate
+      );
       if (!uploaded) {
         alert("The article couldn't be favorited");
       } else {
@@ -68,7 +78,9 @@ export default function ArticleCard({
         {image && <Image alt="Article Image" src={image} width="185rem" />}
       </CardBody>
       <button
-        onClick={() => handleFavorite(title, source, url, image, uploadDate)}
+        onClick={() =>
+          handleFavorite(title, source, url, image, category, uploadDate)
+        }
       >
         {isLoggedIn && (
           <Image className="ml-3" src={favSrc} height={40} width={40}></Image>

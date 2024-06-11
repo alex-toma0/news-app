@@ -19,6 +19,7 @@ export default async function Page() {
             url={favArticle.url}
             favorite={true}
             isLoggedIn={true}
+            category={favArticle.category}
           ></ArticleCard>
         ))}
       </div>

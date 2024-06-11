@@ -40,6 +40,7 @@ export default async function ArticleList({
             url={article.url}
             favorite={article.favorite}
             isLoggedIn={isLoggedIn}
+            category={article.category}
           ></ArticleCard>
         );
       })}

@@ -2,9 +2,10 @@ import prisma from "@/app/utils/prisma";
 import { clerkClient } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
-import { editFavorite, editFeed } from "@/app/actions";
+import { editFavorite, editFeed, getArticleCategories } from "@/app/actions";
 import DeleteFeed from "@/app/components/DeleteFeed";
 import DeleteFavorite from "@/app/components/DeleteFavorite";
+import Statistics from "@/app/components/Statistics";
 export default async function Page({
   params,
 }: {
@@ -23,6 +24,8 @@ export default async function Page({
       userId: params.userId,
     },
   });
+  const articleCategories = await getArticleCategories();
+  console.log(articleCategories);
   let feedList, favoriteList;
   if (feeds.length === 0) feedList = <>User has no feeds</>;
   else {
@@ -50,17 +53,17 @@ export default async function Page({
                 <input
                   type="hidden"
                   name="originalCategories"
-                  value={feed.categories as string}
+                  value={feed.categories || ""}
                 />
                 <input
                   type="hidden"
                   name="originalLanguages"
-                  value={feed.languages as string}
+                  value={feed.languages || ""}
                 />
                 <input
                   type="hidden"
                   name="originalSources"
-                  value={feed.sources as string}
+                  value={feed.sources || ""}
                 />
                 <div className="table-cell">
                   {
@@ -120,13 +123,14 @@ export default async function Page({
   if (favorites.length === 0) favoriteList = <>User has no favorites</>;
   else {
     favoriteList = (
-      <div className="table">
+      <div className="table max-w-lg">
         <div className="table-row border-b-2">
-          <div className="table-cell">Source</div>
-          <div className="table-cell">Title</div>
-          <div className="table-cell">URL</div>
-          <div className="table-cell">Image</div>
-          <div className="table-cell">Upload Date</div>
+          <div className="table-cell px-3">Source</div>
+          <div className="table-cell px-3">Title</div>
+          <div className="table-cell px-3">URL</div>
+          <div className="table-cell px-3">Image</div>
+          <div className="table-cell px-3">Category</div>
+          <div className="table-cell px-3">Upload Date</div>
         </div>
 
         {favorites.map((favorite) => (
@@ -151,14 +155,19 @@ export default async function Page({
               <input
                 type="hidden"
                 name="originalImage"
-                value={favorite.image as string}
+                value={favorite.image || ""}
               />
               <input
                 type="hidden"
                 name="originalDate"
                 value={favorite.uploadDate.toISOString()}
               />
-              <div className="table-cell">
+              <input
+                type="hidden"
+                name="originalCategory"
+                value={favorite.category}
+              />
+              <div className="table-cell p-3">
                 {
                   <input
                     placeholder={favorite.source}
@@ -169,7 +178,7 @@ export default async function Page({
                   />
                 }
               </div>
-              <div className="table-cell pr-3">
+              <div className="table-cell p-3 max-w-20 whitespace-nowrap overflow-hidden overflow-ellipsis">
                 {
                   <input
                     placeholder={favorite.title}
@@ -180,7 +189,7 @@ export default async function Page({
                   />
                 }
               </div>
-              <div className="table-cell pr-3">
+              <div className="table-cell p-3 max-w-20 whitespace-nowrap overflow-hidden overflow-ellipsis">
                 {
                   <input
                     placeholder={favorite.url}
@@ -191,7 +200,7 @@ export default async function Page({
                   />
                 }
               </div>
-              <div className="table-cell">
+              <div className="table-cell p-3 max-w-20 whitespace-nowrap overflow-hidden overflow-ellipsis">
                 {
                   <input
                     placeholder={favorite.image as string}
@@ -202,7 +211,18 @@ export default async function Page({
                   />
                 }
               </div>
-              <div className="table-cell ">
+              <div className="table-cell p-3">
+                {
+                  <input
+                    placeholder={favorite.category}
+                    title={favorite.category}
+                    type="text"
+                    name="category"
+                    className="bg-inherit w-40"
+                  />
+                }
+              </div>
+              <div className="table-cell p-3">
                 {
                   <input
                     placeholder={favorite.uploadDate.toISOString()}
@@ -232,9 +252,9 @@ export default async function Page({
   return (
     <div className="py-10 pl-12 flex flex-col place-items-center gap-7">
       <h1>User {user.id} </h1>
-      <p>Feeds:</p>
+      <h1 className="text-xl font-semibold">Feeds</h1>
       {feedList}
-      <p>Favorites:</p>
+      <h1 className="text-xl font-semibold">Favorites</h1>
       {favoriteList}
     </div>
   );

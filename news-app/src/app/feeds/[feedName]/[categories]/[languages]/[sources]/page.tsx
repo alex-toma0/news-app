@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import ArticleList from "@/app/components/ArticleList";
 import Filters from "@/app/components/Filters";
+import { getFeed } from "@/app/actions";
 const getArticlesByCategory = async (
   category: string,
   languages: string,
@@ -15,12 +16,12 @@ const getArticlesByCategory = async (
     let baseURL = `http://api.mediastack.com/v1/news?access_key=${
       process.env.API_KEY
     }&limit=${50}&sort=${sort}&date=${startDate},${endDate}`;
-    // Building url based on the params
+    // Construirea url-ului bazată pe parametrii
     if (category !== "all") baseURL += `&categories=${category}`;
     if (languages !== "all") baseURL += `&languages=${languages}`;
     if (sources !== "all") baseURL += `&sources=${sources}`;
 
-    const res = await fetch(baseURL);
+    const res = await fetch(baseURL, { next: { revalidate: 3600 } });
     const articles = await res.json();
     return articles["data"];
   } catch (err) {
@@ -65,6 +66,14 @@ export default async function Page({
     endDate
   );
   const { userId } = auth();
+  const feed = await getFeed(params.feedName);
+  if (feed?.userId !== userId) {
+    return (
+      <div className="py-10 flex flex-col gap-7 place-items-center">
+        <>You don't have access to this page!</>
+      </div>
+    );
+  }
   if (articles.length > 0 && userId) {
     return (
       <div className="py-10 flex flex-col gap-7 place-items-center">
@@ -73,7 +82,12 @@ export default async function Page({
         <ArticleList articles={articles} />
       </div>
     );
-  } else {
-    return <>Articles couldn't be loaded!</>;
+  } else if (articles.lengh === 0 && userId) {
+    return (
+      <div className="py-10 flex flex-col gap-7 place-items-center">
+        <FeedBar feedName={params.feedName} userId={userId} />
+        <>There are no articles matching your preferences</>
+      </div>
+    );
   }
 }

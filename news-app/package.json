@@ -14,9 +14,11 @@
     "@internationalized/date": "^3.5.4",
     "@nextui-org/react": "^2.2.10",
     "@prisma/client": "^5.13.0",
+    "chart.js": "^4.4.3",
     "framer-motion": "^11.0.25",
     "next": "^14.2.3",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "svix": "^1.24.0"

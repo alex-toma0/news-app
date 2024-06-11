@@ -61,6 +61,7 @@ export default function Page() {
           name="sources"
           label="Choose the news sources"
           placeholder="source1,source2,..."
+          pattern="^([a-zA-Z0-9]+,)*[a-zA-Z0-9]+$"
         />
         <Button type="submit">Create feed</Button>
       </form>

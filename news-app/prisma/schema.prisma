@@ -41,6 +41,7 @@ model UserFavorites {
   title      String
   url        String
   image      String?
+  category   String
   uploadDate DateTime
   user       User     @relation(fields: [userId], references: [id])
 
