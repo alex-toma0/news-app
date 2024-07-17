@@ -83,7 +83,13 @@ export default function ArticleCard({
         title="Favorite"
       >
         {isLoggedIn && (
-          <Image className="ml-3" src={favSrc} height={40} width={40}></Image>
+          <Image
+            className="ml-3"
+            src={favSrc}
+            height={40}
+            width={40}
+            alt="Article Image"
+          ></Image>
         )}
       </button>
     </Card>
