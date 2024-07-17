@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import prisma from "./utils/prisma";
 import { redirect } from "next/navigation";
 export async function createFeed(formData: FormData) {
@@ -48,7 +48,7 @@ export async function editFeed(formData: FormData) {
       },
     },
   });
-  redirect(`/admin/userList/${userId}`);
+  redirect(`/admin/dashboard/${userId}`);
 }
 
 export const getFeed = async (feedName: string) => {
@@ -168,7 +168,7 @@ export const editFavorite = async (formData: FormData) => {
       },
     },
   });
-  redirect(`/admin/userList/${userId}`);
+  redirect(`/admin/dashboard/${userId}`);
 };
 export const deleteFavorite = async (userId: string, url: string) => {
   const deleteFavorite = await prisma.userFavorites.delete({
@@ -226,4 +226,28 @@ export const getArticleCategories = async () => {
     category: article.category,
     count: article._count.category,
   }));
+};
+
+export const getArticleSources = async () => {
+  const articleSources = await prisma.userFavorites.groupBy({
+    by: ["source"],
+    _count: {
+      source: true,
+    },
+    orderBy: {
+      _count: {
+        source: "desc",
+      },
+    },
+    take: 8,
+  });
+  return articleSources.map((article) => ({
+    source: article.source,
+    count: article._count.source,
+  }));
+};
+
+export const getUser = async (id: string) => {
+  const user = await clerkClient.users.getUser(id);
+  return user;
 };

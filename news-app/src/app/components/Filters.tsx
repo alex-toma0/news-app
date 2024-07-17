@@ -17,7 +17,10 @@ export default function Filters() {
   const [sort, setSort] = useState("popularity");
   const [language, setLanguage] = useState("en");
   const [range, setRange] = useState({
-    start: today(getLocalTimeZone()).set({ day: 1 }),
+    start: today(getLocalTimeZone()).set({
+      day: 1,
+      month: today(getLocalTimeZone()).month - 1,
+    }),
     end: today(getLocalTimeZone()),
   });
   return (

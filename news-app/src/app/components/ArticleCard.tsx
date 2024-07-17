@@ -48,14 +48,12 @@ export default function ArticleCard({
       if (!uploaded) {
         alert("The article couldn't be favorited");
       } else {
-        alert("The article has been favorited!");
         router.refresh();
       }
     } else {
       if (!unfavorite(url)) {
         alert("The article couldn't be unfavorited!");
       } else {
-        alert("The article has been unfavorited!");
         router.refresh();
       }
     }
@@ -72,15 +70,17 @@ export default function ArticleCard({
         <a href={url} className="font-extrabold">
           {title}
         </a>
+        <small>{category}</small>
       </CardHeader>
       <CardBody className="flex flex-col">
-        <small>{`${year}-${month}-${day}`}</small>
+        <small className="pb-2">{`${year}-${month}-${day}`}</small>
         {image && <Image alt="Article Image" src={image} width="185rem" />}
       </CardBody>
       <button
         onClick={() =>
           handleFavorite(title, source, url, image, category, uploadDate)
         }
+        title="Favorite"
       >
         {isLoggedIn && (
           <Image className="ml-3" src={favSrc} height={40} width={40}></Image>

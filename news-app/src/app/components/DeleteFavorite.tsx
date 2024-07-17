@@ -17,7 +17,7 @@ export default function DeleteFavorite({
         color="danger"
         onClick={() => {
           deleteFavorite(userId, url);
-          router.push(`/admin/userList/${userId}`);
+          router.push(`/admin/dashboard/${userId}`);
         }}
       >
         Delete

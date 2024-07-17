@@ -2,7 +2,7 @@ import { clerkClient, auth, EmailAddress } from "@clerk/nextjs/server";
 import prisma from "@/app/utils/prisma";
 import Link from "next/link";
 import Statistics from "@/app/components/Statistics";
-import { getArticleCategories } from "@/app/actions";
+import { getArticleCategories, getArticleSources } from "@/app/actions";
 const getUsers = async () => {
   const { userId } = auth();
   if (!userId) return null;
@@ -11,7 +11,7 @@ const getUsers = async () => {
       id: userId,
     },
   });
-  // User doesn't have the admin role
+  // Utilizatorul nu are rolul de administrator
   if (user?.roleId !== 2) return null;
   const users = await clerkClient.users.getUserList();
   return users["data"];
@@ -19,6 +19,7 @@ const getUsers = async () => {
 export default async function Dashboard() {
   const users = await getUsers();
   const articleCategories = await getArticleCategories();
+  const articleSources = await getArticleSources();
   if (!users)
     return (
       <div className="flex flex-col place-items-center mt-10">
@@ -45,11 +46,16 @@ export default async function Dashboard() {
   );
 
   return (
-    <div className="py-10 pl-12 flex flex-col place-items-center gap-7">
-      <h1 className="text-xl font-semibold">User list</h1>
-      {userList}
-      <h1 className="text-xl font-semibold">Statistics </h1>
-      <Statistics articleCategories={articleCategories} />
-    </div>
+    <>
+      <div className="py-10 flex flex-col place-items-center gap-7">
+        <h1 className="text-xl font-semibold">User list</h1>
+        {userList}
+        <h1 className="text-xl font-semibold">Statistics </h1>
+      </div>
+      <Statistics
+        articleCategories={articleCategories}
+        articleSources={articleSources}
+      />
+    </>
   );
 }

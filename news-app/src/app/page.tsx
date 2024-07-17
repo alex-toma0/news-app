@@ -18,7 +18,7 @@ const getTopArticles = async (
 ) => {
   const url = `http://api.mediastack.com/v1/news?access_key=${
     process.env.API_KEY
-  }&languages=en&sort=${sort}&limit=${50}&date=${startDate},${endDate}`;
+  }&limit=${100}&languages=en&sort=${sort}&date=${startDate},${endDate}`;
   const res = await fetch(url, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
@@ -34,7 +34,12 @@ export default async function Page({
 }) {
   let sort = "popularity";
   let endDate = today(getLocalTimeZone()).toString();
-  let startDate = today(getLocalTimeZone()).set({ day: 1 }).toString();
+  let startDate = today(getLocalTimeZone())
+    .set({
+      day: 1,
+      month: today(getLocalTimeZone()).month - 1,
+    })
+    .toString();
   if (typeof searchParams.sort === "string") sort = searchParams.sort;
   if (
     typeof searchParams.startDate === "string" &&

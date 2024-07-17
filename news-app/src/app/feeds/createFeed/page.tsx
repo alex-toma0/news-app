@@ -15,6 +15,13 @@ const languageObj: any = {
   German: "de",
   English: "en",
   Spanish: "es",
+  French: "fr",
+  Hebrew: "he",
+  Italian: "it",
+  Dutch: "nl",
+  Norwegian: "no",
+  Portuguese: "pt",
+  Russian: "ru",
 };
 const languages = Object.keys(languageObj);
 export default function Page() {

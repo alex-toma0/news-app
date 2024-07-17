@@ -47,9 +47,9 @@ export default async function Page() {
               <Link href={redirectURL}>
                 <div className="table-cell py-1 px-2">{feed.feedName}</div>
               </Link>
-              <div className="table-cell">{feed.categories}</div>
-              <div className="table-cell">{feed.languages}</div>
-              <div className="table-cell">{feed.sources}</div>
+              <div className="table-cell py-1 px-2">{feed.categories}</div>
+              <div className="table-cell py-1 px-2">{feed.languages}</div>
+              <div className="table-cell py-1 px-2">{feed.sources}</div>
             </div>
           );
         })}

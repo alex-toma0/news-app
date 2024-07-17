@@ -1,6 +1,5 @@
+"use server";
 import prisma from "@/app/utils/prisma";
-import { clerkClient } from "@clerk/nextjs/server";
-import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import { editFavorite, editFeed, getArticleCategories } from "@/app/actions";
 import DeleteFeed from "@/app/components/DeleteFeed";
@@ -106,7 +105,7 @@ export default async function Page({
                   }
                 </div>
                 <div className="table-cell">
-                  <Button type="submit" variant="flat">
+                  <Button type="submit" variant="flat" color="warning">
                     Edit
                   </Button>
                 </div>
@@ -247,11 +246,10 @@ export default async function Page({
       </div>
     );
   }
-  const user = await clerkClient.users.getUser(params.userId);
 
   return (
     <div className="py-10 pl-12 flex flex-col place-items-center gap-7">
-      <h1>User {user.id} </h1>
+      <h1>User {params.userId} </h1>
       <h1 className="text-xl font-semibold">Feeds</h1>
       {feedList}
       <h1 className="text-xl font-semibold">Favorites</h1>

@@ -15,7 +15,7 @@ const getArticlesByCategory = async (
   try {
     let baseURL = `http://api.mediastack.com/v1/news?access_key=${
       process.env.API_KEY
-    }&limit=${50}&sort=${sort}&date=${startDate},${endDate}`;
+    }&limit=${100}&sort=${sort}&date=${startDate},${endDate}`;
     // Construirea url-ului bazată pe parametrii
     if (category !== "all") baseURL += `&categories=${category}`;
     if (languages !== "all") baseURL += `&languages=${languages}`;
@@ -43,7 +43,12 @@ export default async function Page({
 }) {
   let sort = "popularity";
   let endDate = today(getLocalTimeZone()).toString();
-  let startDate = today(getLocalTimeZone()).set({ day: 1 }).toString();
+  let startDate = today(getLocalTimeZone())
+    .set({
+      day: 1,
+      month: today(getLocalTimeZone()).month - 1,
+    })
+    .toString();
 
   if (typeof searchParams.sort === "string") sort = searchParams.sort;
   if (
