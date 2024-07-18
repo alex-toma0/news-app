@@ -54,7 +54,6 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   console.log(`Webhook with and ID of ${id} and name of  type of ${eventType}`);
   console.log("Webhook body:", body);
-
   const createUser = await prisma.user.create({
     data: {
       id: id as string,
